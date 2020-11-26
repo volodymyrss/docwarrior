@@ -49,13 +49,16 @@ def up():
 
 
 @cli.command()
-@click.option("-t", "--tag", default=None)
+@click.option("-t", "--tag", default=None, multiple=True)
 def tag(tag):
     oda_meta_data = read_metadata()
 
     if tag is not None:
-        click.echo(f"tagging {tag}")
-        oda_meta_data['tags'] = list(set(oda_meta_data.get('tags', []) + [tag]))
+        for t in tag:
+            for _t in t.split(","):
+                click.echo(f"tagging {_t}")
+                oda_meta_data['tags'] = list(set(oda_meta_data.get('tags', []) + [_t]))
+        click.echo(f"current tags: {oda_meta_data['tags']}")
 
     yaml.dump(oda_meta_data, open("oda.yaml", "w"))
 
