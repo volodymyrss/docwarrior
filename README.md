@@ -14,3 +14,5 @@ https://github.com/volodymyrss/redmine-flow
 gitlab, github as desired
 
 overleaf/sharelatex through git and api for comments
+
+use pandoc for converting
