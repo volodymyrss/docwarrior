@@ -34,8 +34,6 @@ def discover_directory_remote():
     return r
 
   
-      
-
 @cli.command()
 @click.option("-t", "--tag", default=None, multiple=True)
 def up(tag):
@@ -51,9 +49,14 @@ def up(tag):
             name = remote.split("/")[-1][:-4]
 
         if 'overleaf' in remote:
-            title = re.search(r'\\title\{(.*?)\}', open('main.tex').read()).groups()[0]
-            print("found title:", title)
-            name = title.lower().replace(" ", "_")
+            text = open('main.tex').read()
+            text = re.sub(r"\\textbf\{(.*?)\}", r"\1", text)
+            text = re.sub(r"\\textit\{(.*?)\}", r"\1", text)
+
+            title = re.search(r'\\title\{(.*?)\}', text).groups()[0]
+
+            print("\033[31mfound title:", title, "\033[0m")
+            name = re.sub("[^a-z0-9]+", "_", title.lower())
 
         if 'gitlab.astro.unige.ch' in remote:
             name = remote.split("/")[-1][:-4]
